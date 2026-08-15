@@ -1,7 +1,0 @@
-1;Luis Veas;lve;123456;ADMIN
-2;María A;ma;qwerty;GENERAL
-99;Alvaro;Carrion;;G
-67;Cristobal Mancilla;CRZ_7;12345;ADMIN
-68;Benjamin Riquelme;MOMO;123456;GENERAL
-69;Cristobal;Mantequilla;maza;ADMIN
-90;Benjamin Perez;Benyamin;1234;ADMIN
