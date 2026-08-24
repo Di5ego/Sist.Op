@@ -8,12 +8,12 @@ using namespace std;
 // Funcion auxiliar para leer opcion entera con validacion 
 static int leerOpcion() {
     int opcion = 0;
-    cout << "\nOpción : ";
+    cout << "\nOpcion : ";
     while (!(cin >> opcion)) {
         if (cin.eof()) return 0;
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Entrada inválida. Ingrese un número para la opción: ";
+        cout << "Entrada invalida. Ingrese un numero para la opcion: ";
     }
     cin.ignore(numeric_limits<streamsize>::max(), '\n');// Limpiar el buffer de entrada
     return opcion;
@@ -47,22 +47,22 @@ static void pantallaIngresarUsuario(ListaUsuarios& listaUsuarios, ListaPerfiles&
     while (true) {
         string idStr = leerLinea("Id: ");
         if (idStr.empty()) {
-            cout << "¡Error! El ID no puede estar vacío.\n";
+            cout << "Error! El ID no puede estar vacio\n";
             continue;
         }
         try {
             u.id = stoi(idStr);
             if (u.id <= 0) {
-                cout << "¡Error! El ID debe ser un número entero positivo mayor a 0.\n";
+                cout << "Error! El ID debe ser un numero entero positivo mayor a 0\n";
                 continue;
             }
             if (existeUsuarioId(listaUsuarios, u.id)) {
-                cout << "¡Error! Ya existe un usuario registrado con el ID " << u.id << ". Intente con otro.\n";
+                cout << "Error! Ya existe un usuario registrado con el ID " << u.id << ". Intente con otro\n";
                 continue;
             }
             break;
         } catch (...) {
-            cout << "¡Error! El ID debe ser un número entero válido.\n";
+            cout << "Error! El ID debe ser un numero entero valido\n";
         }
     }
 
@@ -70,29 +70,29 @@ static void pantallaIngresarUsuario(ListaUsuarios& listaUsuarios, ListaPerfiles&
     while (true) {
         u.nombre = leerLinea("Nombre (Primer nombre y primer apellido): ");
         if (u.nombre.empty()) {
-            cout << "¡Error! El nombre no puede estar vacío.\n";
+            cout << "Error! El nombre no puede estar vacio\n";
             continue;
         }
         if (u.nombre.length() < 5) {
-            cout << "¡Error! El nombre debe tener un mínimo de 5 caracteres.\n";
+            cout << "Error! El nombre debe tener un minimo de 5 caracteres.\n";
             continue;
         }
         break;
     }
 
-    // Validar Username (minimo 2 caracteres y único)
+    // Validar Username (minimo 2 caracteres y unico)
     while (true) {
         u.username = leerLinea("username: ");
         if (u.username.empty()) {
-            cout << "¡Error! El username no puede estar vacío.\n";
+            cout << "Error! El username no puede estar vacio\n";
             continue;
         }
         if (u.username.length() < 2) {
-            cout << "¡Error! El username debe tener un mínimo de 2 caracteres.\n";
+            cout << "Error! El username debe tener un minimo de 2 caracteres\n";
             continue;
         }
         if (existeUsername(listaUsuarios, u.username)) {
-            cout << "¡Error! El username '" << u.username << "' ya existe. Por favor elija uno diferente.\n";
+            cout << "Error! El username '" << u.username << "' ya existe. Por favor elija uno diferente\n";
             continue;
         }
         break;
@@ -102,11 +102,11 @@ static void pantallaIngresarUsuario(ListaUsuarios& listaUsuarios, ListaPerfiles&
     while (true) {
         u.password = leerLinea("password: ");
         if (u.password.empty()) {
-            cout << "¡Error! La contraseña no puede estar vacía.\n";
+            cout << "Error! La contraseña no puede estar vacia\n";
             continue;
         }
         if (u.password.length() < 2) {
-            cout << "¡Error! La contraseña debe tener un mínimo de 2 caracteres.\n";
+            cout << "Error! La contraseña debe tener un minimo de 2 caracteres\n";
             continue;
         }
         break;
@@ -116,19 +116,16 @@ static void pantallaIngresarUsuario(ListaUsuarios& listaUsuarios, ListaPerfiles&
     while (true) {
         u.perfil = leerLinea("perfil: ");
         if (u.perfil.empty()) {
-            cout << "¡Error! El perfil no puede estar vacío.\n";
+            cout << "Error! El perfil no puede estar vacio\n";
             continue;
         }
         if (u.perfil.length() < 2) {
-            cout << "¡Error! El nombre del perfil debe tener un mínimo de 2 caracteres.\n";
+            cout << "Error! El nombre del perfil debe tener un minimo de 2 caracteres\n";
             continue;
         }
         if (!existePerfil(listaPerfiles, u.perfil)) {
-            cout << "¡Advertencia! El perfil '" << u.perfil << "' no se encuentra registrado en los perfiles del sistema.\n";
-            string confirm = leerLinea("¿Desea mantener este perfil de todas formas? (s/n): ");
-            if (confirm == "s" || confirm == "S") {
-                break;
-            }
+            cout << "Error! El perfil '" << u.perfil << "' no se encuentra registrado en los perfiles del sistema.\n";
+            continue;
         } else {
             break;
         }
@@ -143,7 +140,7 @@ static void pantallaIngresarUsuario(ListaUsuarios& listaUsuarios, ListaPerfiles&
             cout << "\n-> Error al guardar el usuario.\n";
         }
     } else {
-        cout << "\n-> Operación cancelada.\n";
+        cout << "\n-> Operacion cancelada\n";
     }
 }
 
@@ -171,7 +168,7 @@ static void pantallaEliminarUsuario(ListaUsuarios& listaUsuarios, const string& 
     try {
         idBorrar = stoi(idStr);
     } catch (...) {
-        cout << "¡Error! ID inválido.\n";
+        cout << "Error! ID invalido.\n";
         return;
     }
 
@@ -181,26 +178,26 @@ static void pantallaEliminarUsuario(ListaUsuarios& listaUsuarios, const string& 
     });
 
     if (it == listaUsuarios.usuarios.end()) {
-        cout << "¡Error! No existe ningún usuario registrado con el ID " << idBorrar << ".\n";
+        cout << "Error! No existe ningun usuario registrado con el ID " << idBorrar << ".\n";
         return;
     }
 
     // Requerimiento: "si el usuario a eliminar es perfil 'ADMIN', debe enviar un mensaje de alerta señalando el posible error"
     if (it->perfil == "ADMIN") {
-        cout << "¡ALERTA!: El usuario que intenta eliminar tiene perfil 'ADMIN'.\n";
-        cout << "Eliminar un usuario administrador puede provocar perdida de acceso.\n";
+        cout << "ALERTA!: El usuario que intenta eliminar tiene perfil 'ADMIN'\n";
+        cout << "Eliminar un usuario administrador puede provocar perdida de acceso\n";
     }
 
     cout << "\n1) guardar    2) cancelar\n";
     int op = leerOpcion();
     if (op == 1) {
         if (eliminarUsuarioPorId(listaUsuarios, idBorrar, rutaUsuarios, true)) {
-            cout << "\n-> Usuario eliminado exitosamente.\n";
+            cout << "\n-> Usuario eliminado exitosamente\n";
         } else {
-            cout << "\n-> No se pudo eliminar el usuario.\n";
+            cout << "\n-> No se pudo eliminar el usuario\n";
         }
     } else {
-        cout << "\n-> Operación cancelada.\n";
+        cout << "\n-> Operacion cancelada\n";
     }
 }
 
@@ -228,7 +225,7 @@ void menuGestionUsuarios(ListaUsuarios& listaUsuarios, ListaPerfiles& listaPerfi
                 pantallaEliminarUsuario(listaUsuarios, rutaUsuarios);
                 break;
             default:
-                cout << "Opcion invalida. Intente de nuevo.\n";
+                cout << "Opcion invalida, intente de nuevo\n";
                 break;
         }
     }
@@ -248,15 +245,15 @@ static void pantallaIngresarPerfil(ListaPerfiles& listaPerfiles, const string& r
     while (true) {
         p.nombre = leerLinea("Nombre del perfil (ej: ADMIN, GENERAL: ");
         if (p.nombre.empty()) {
-            cout << "¡Error! El nombre del perfil no puede estar vacio.\n";
+            cout << "Error! El nombre del perfil no puede estar vacio\n";
             continue;
         }
         if (p.nombre.length() < 2) {
-            cout << "¡Error! El nombre del perfil debe tener un minimo de 2 caracteres.\n";
+            cout << "Error! El nombre del perfil debe tener un minimo de 2 caracteres\n";
             continue;
         }
         if (existePerfil(listaPerfiles, p.nombre)) {
-            cout << "¡Error! Ya existe un perfil denominado '" << p.nombre << "'. Por favor elija un nombre diferente.\n";
+            cout << "Error! Ya existe un perfil denominado '" << p.nombre << "'. Por favor elija un nombre diferente\n";
             continue;
         }
         break;
@@ -266,7 +263,7 @@ static void pantallaIngresarPerfil(ListaPerfiles& listaPerfiles, const string& r
     while (true) {
         string opsLine = leerLinea("Opciones de menu permitidas (separadas por coma, ej: 0,1,2,3): ");
         if (opsLine.empty()) {
-            cout << "¡Error! Debe ingresar al menos una opcion de menu permitida.\n";
+            cout << "Error! Debe ingresar al menos una opcion de menu permitida\n";
             continue;
         }
 
@@ -282,7 +279,7 @@ static void pantallaIngresarPerfil(ListaPerfiles& listaPerfiles, const string& r
         }
 
         if (p.opciones.empty()) {
-            cout << "¡Error! No se reconocieron numeros de opcion validos. Ingrese opciones numericas separadas por coma.\n";
+            cout << "Error! No se reconocieron numeros de opcion validos, debe ingrese opciones numericas separadas por coma\n";
             continue;
         }
         break;
@@ -292,12 +289,12 @@ static void pantallaIngresarPerfil(ListaPerfiles& listaPerfiles, const string& r
     int op = leerOpcion();
     if (op == 1) {
         if (guardarPerfil(listaPerfiles, p, rutaPerfiles)) {
-            cout << "\n-> Perfil guardado exitosamente.\n";
+            cout << "\n-> Perfil guardado exitosamente\n";
         } else {
-            cout << "\n-> Error al guardar el perfil.\n";
+            cout << "\n-> Error al guardar el perfil\n";
         }
     } else {
-        cout << "\n-> Operacion cancelada.\n";
+        cout << "\n-> Operacion cancelada\n";
     }
 }
 // Pantalla que muestra los perfiles y espera confirmación para volver
@@ -323,14 +320,14 @@ static void pantallaEliminarPerfil(ListaPerfiles& listaPerfiles, const string& r
     string nombreBorrar = leerLinea("Nombre del perfil a borrar: ");
     
     if (!existePerfil(listaPerfiles, nombreBorrar)) {
-        cout << "¡Error! No existe ningún perfil denominado '" << nombreBorrar << "'.\n";
+        cout << "Error! No existe ningun perfil denominado '" << nombreBorrar << "'.\n";
         return;
     }
 
     // Alerta por si vamos a eliminar a un admin 
     if (nombreBorrar == "ADMIN") {
         cout << "\n============================================================\n";
-        cout << "¡ALERTA!: Esta a punto de eliminar el perfil 'ADMIN'.\n";
+        cout << "ALERTA!: Esta a punto de eliminar el perfil 'ADMIN'.\n";
     }
 
     cout << "\n1) guardar    2) cancelar\n";
@@ -385,10 +382,10 @@ void mostrarMenuPrincipal(ListaUsuarios& listaUsuarios, ListaPerfiles& listaPerf
     int opcion = -1;
     while (opcion != 0) {
         cout << "------------------------------------------------------------\n";
-        cout << "          Módulo: Administrador de Usuarios y Perfiles      \n";
+        cout << "          Modulo: Administrador de Usuarios y Perfiles      \n";
         cout << "------------------------------------------------------------\n";
-        cout << "1) Módulo - Gestion de Usuarios\n";
-        cout << "2) Módulo - Gestion de Perfiles\n";
+        cout << "1) Modulo - Gestion de Usuarios\n";
+        cout << "2) Modulo - Gestion de Perfiles\n";
         cout << "0) Salir\n";
 
         opcion = leerOpcion();
@@ -403,8 +400,10 @@ void mostrarMenuPrincipal(ListaUsuarios& listaUsuarios, ListaPerfiles& listaPerf
                 menuGestionPerfiles(listaPerfiles, rutaPerfiles);
                 break;
             default:
-                cout << "Opcion invalida. Por favor seleccione un numero del menu.\n";
+                cout << "Opcion invalida, por favor seleccione un numero del menu\n";
                 break;
         }
     }
 }
+
+
