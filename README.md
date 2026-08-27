@@ -110,7 +110,7 @@ make
 g++ -std=c++17 -static-libgcc -static-libstdc++ -Wall -Iinclude src/main.cpp src/usuario.cpp src/perfil.cpp src/menu.cpp -o sistope.exe
 
 # Ejecución
-sistope.exe
+./sistope.exe
 ```
 
 ---
