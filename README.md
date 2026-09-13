@@ -5,7 +5,7 @@
 **Entrega:** 1  
 
 ---
-
+---------
 ## 1. Propósito de la Aplicación
 
 Consiste en un **"Administrador de Usuarios y Perfiles"** desarrollado en c++. Realiza la gestion completa (Crear, Listar y Eliminar) de usuarios y perfiles del sistema.
