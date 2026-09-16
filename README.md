@@ -1,4 +1,4 @@
-# SistOpe - Sistema de Administración de Usuarios, Perfiles y Menú Principal (Entrega 2)
+# SistOpe -Entrega 2
 
 **Asignatura:** Sistemas Operativos (INFO198)  
 **Profesor:** Luis Veas
