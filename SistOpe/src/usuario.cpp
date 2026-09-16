@@ -212,59 +212,36 @@ bool eliminarUsuarioPorId(ListaUsuarios& lista, int idEliminar, const string& ru
 }
 
 
-bool eliminarUsuarioPorId(ListaUsuarios& lista, int idEliminar, const string& rutaArchivo, bool confirmarAlertaAdmin) {
-
-    // Verifica si los usuarios ya fueron cargados en la memoria.
+// Elimina todos los usuarios que tengan asignado el perfil especificado (eliminación en cascada)
+int eliminarUsuariosPorPerfil(ListaUsuarios& lista, const string& nombrePerfil, const string& rutaArchivo) {
     if (!lista.cargadoEnMemoria) {
-
-        // Si no estan cargados, obtiene los usuarios desde el archivo.
         cargarUsuariosDesdeArchivo(lista, rutaArchivo);
     }
 
-    // Busca en la lista un usuario que tenga el mismo ID que se desea eliminar.
-    auto it = find_if(
-        lista.usuarios.begin(),  // Indica el inicio de la lista.
-        lista.usuarios.end(),    // Indica el final de la lista.
-
-        // Función que se ejecuta para cada usuario de la lista
-        [idEliminar](const Usuario& u) {
-
-            // Compara el ID del usuario actual con el ID buscado
-            // Si son iguales, significa que encontró al usuario
-            return u.id == idEliminar;
-        }
+    size_t tamInicial = lista.usuarios.size();
+    lista.usuarios.erase(
+        remove_if(lista.usuarios.begin(), lista.usuarios.end(), [&nombrePerfil](const Usuario& u) {
+            return u.perfil == nombrePerfil;
+        }),
+        lista.usuarios.end()
     );
 
-    // Si el iterador llegó al final de la lista, significa que no se encontró
-    // ningún usuario con el ID proporcionado.
-    if (it == lista.usuarios.end()) {
-
-        // Muestra un mensaje informando que el usuario no existe.
-        cout << "Error: No se encontró ningún usuario con el ID "
-             << idEliminar << ".\n";
-
-        return false;
+    int eliminados = static_cast<int>(tamInicial - lista.usuarios.size());
+    if (eliminados > 0) {
+        ofstream file(rutaArchivo, ios::trunc);
+        if (file.is_open()) {
+            for (const auto& u : lista.usuarios) {
+                file << u.id << ";"
+                     << u.nombre << ";"
+                     << u.username << ";"
+                     << u.password << ";"
+                     << u.perfil << "\n";
+            }
+            file.close();
+        }
     }
-
-    // Elimina de la lista en memoria el usuario encontrado.
-    lista.usuarios.erase(it);
-
-    // Abre el archivo para sobrescribirlo completamente.
-    ofstream file(rutaArchivo, ios::trunc);
-
-    // Comprueba si el archivo se abrió correctamente.
-    if (!file.is_open()) {
-
-        // Muestra un mensaje de error si no se pudo abrir el archivo.
-        cerr << "Error: No se pudo abrir el archivo para actualizar "
-             << "la lista de usuarios." << endl;
-
-        // Retorna false porque los cambios no pudieron guardarse.
-        return false;
-    }
-
-    // Recorre todos los usuarios que quedaron después de la eliminación.
-    for (const auto& u : lista.usuarios) {
+    return eliminados;
+}
 
 // Verifica si un ID de usuario ya existe en la lista de usuarios
 bool existeUsuarioId(const ListaUsuarios& lista, int id) {
@@ -273,6 +250,7 @@ bool existeUsuarioId(const ListaUsuarios& lista, int id) {
     }
     return false;
 }
+
 // Verifica si un username ya existe en la lista de usuarios
 bool existeUsername(const ListaUsuarios& lista, const string& username) {
     for (const auto& u : lista.usuarios) {
@@ -280,3 +258,5 @@ bool existeUsername(const ListaUsuarios& lista, const string& username) {
     }
     return false;
 }
+
+
