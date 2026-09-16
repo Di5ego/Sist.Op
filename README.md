@@ -37,7 +37,7 @@
 
 5. **Carpeta `LIBROS/` (> 50 MB):**
    - Incluye una colección de libros en formato `.txt` de diversos géneros (ciencia ficción, fantasía, drama, biografías, ciencias, naturaleza) superando un tamaño total de **50 MB** para pruebas masivas de conteo de texto.
-   -Link libros para el ejecutable: https://drive.google.com/drive/folders/1LyTzwUJr2Pf6XJUQK9Msw97EC12I4_Ah?usp=drive_link
+   -Link libros para el ejecutable(debe descargarlos y agregarlo dentro de la carpeta "Libros" ): https://drive.google.com/drive/folders/1LyTzwUJr2Pf6XJUQK9Msw97EC12I4_Ah?usp=drive_link
 ---
 
 ## 2. Estructura del Proyecto
