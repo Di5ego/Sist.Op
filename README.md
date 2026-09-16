@@ -1,90 +1,108 @@
-# SistOpe - Administrador de Usuarios y Perfiles
+# SistOpe - Sistema de Administración de Usuarios, Perfiles y Menú Principal (Entrega 2)
 
 **Asignatura:** Sistemas Operativos (INFO198)  
 **Profesor:** Luis Veas-Castillo  
-**Entrega:** 1  
+**Entrega:** 2  
 
 ---
----------
+
 ## 1. Propósito de la Aplicación
 
-Consiste en un **"Administrador de Usuarios y Perfiles"** desarrollado en c++. Realiza la gestion completa (Crear, Listar y Eliminar) de usuarios y perfiles del sistema.
+**SistOpe** es un sistema modular desarrollado en C++ para la asignatura de Sistemas Operativos. En esta **Entrega 2**, la aplicación incorpora autenticación obligatoria por argumentos en línea de comandos (`-u`, `-p`, `-f`), control de acceso estricto basado en perfiles (`ADMIN`), e integra un menú principal de 7 opciones funcionales.
 
-El programa hace lo escencial: te permite crear, ver y eliminar usuarios o perfiles. Mientras usas la aplicacion, los datos se manejan rapido en la memoria usando `structs` (`struct Usuario`, `struct ListaUsuarios`, `struct Perfil`, `struct ListaPerfiles`), y al realizar un cambio todo queda guardado en archivos de texto. Tambien agregamos un control de permisos basico(ADMIN y GENERAL).
+### Características Principales (Entrega 2):
+1. **Autenticación e Invocación por Banderas CLI:**
+   - `-u <usuario>`: Especifica el nombre de usuario (`username`).
+   - `-p <password>`: Especifica la contraseña.
+   - `-f <archivo>`: Especifica la ruta por defecto para el conteo de texto.
+   - Si las credenciales no son válidas o faltan argumentos obligatorios, el sistema deniega el acceso antes de mostrar el menú.
 
+2. **Encabezado Informativo de Sesión:**
+   Muestra constantemente en pantalla las credenciales del usuario autenticado:  
+   `User: <username> (<perfil>)` (ej: `User: lve (ADMIN)`).
 
-### Características Principales:
-- **Estructuras de Datos (`struct`):**
-  - **Usuario:** Contiene `id`, `nombre`, `username`, `password` y `perfil`.
-  - **ListaUsuarios:** Mantiene el vector de usuarios en memoria.
-  - **Perfil:** Contiene `nombre` y un array de enteros (`opciones`) que representan los permisos del menu.
-  - **ListaPerfiles:** Mantiene el vector de perfiles en memoria.
-- **Persistencia en Disco:**
-  - Persistencia de usuarios en `USUARIOS.TXT` (formato `id;nombre;username;password;perfil`).
-  - Persistencia de perfiles en `PERFILES.TXT` (formato `NOMBRE;opcion1,opcion2,...`).
-- **Navegación e Identificadores:** Tratamiento interno numerico (`int`) de todas las opciones de menu. La opción `0` permite salir o volver
-- **Alertas de Seguridad:** En la eliminacion de un usuario o perfil con rol `"ADMIN"`, el sistema muestra una advertencia de seguridad explícita antes de solicitar la confirmación (`1) guardar` / `2) cancelar`).
+3. **Menú Principal de 7 Opciones + Salir (0):**
+   - **`0) Salir`**: Finaliza el programa de forma segura.
+   - **`1) Admin de usuarios y perfiles`**: Accesible **únicamente** por usuarios con perfil `ADMIN`. Invoca el sistema completo de gestión de usuarios y perfiles de la Entrega 1.
+   - **`2) Multiplica matrices NxM`**: Ejecuta el programa independiente `multi.exe` para multiplicar matrices cuadradas o rectangulares $N \times M$ validadas desde archivos de texto.
+   - **`3) Juego`**: Despliega la pantalla informativa `"(mensaje en construcción)"`.
+   - **`4) ¿es palíndromo?`**: Submenú interactivo para ingresar texto y validar si es un palíndromo (ignorando mayúsculas, minúsculas, espacios y caracteres especiales).
+   - **`5) Calcular f(x)=x*x + 2x + 8`**: Calcula la función $f(x) = x^2 + 2x + 8$ aceptando números reales decimales (`double`).
+   - **`6) CONTEO SOBRE TEXTO`**: Procesa el archivo ingresado mediante la bandera `-f` y entrega un resumen con: cantidad de vocales, consonantes, caracteres especiales y palabras.
+   - **`7) CONTEO SOBRE ARCHIVO`**: Interfaz interactiva que solicita la ruta de cualquier archivo e impresiona el mismo resumen de conteo que la opción 6.
+
+4. **Programa Independiente Multiplicador de Matrices (`multi.exe`):**
+   - Recibe argumentos CLI: `./multi <ruta_A.TXT> <ruta_B.TXT> <separador> [username] [perfil]`.
+   - Valida la existencia de los archivos, formato, contenido numérico y compatibilidad de dimensiones ($N \times M$ con $M \times P$).
+
+5. **Carpeta `LIBROS/` (> 50 MB):**
+   - Incluye una colección de libros en formato `.txt` de diversos géneros (ciencia ficción, fantasía, drama, biografías, ciencias, naturaleza) superando un tamaño total de **50 MB** para pruebas masivas de conteo de texto.
 
 ---
 
 ## 2. Estructura del Proyecto
 
+```text
+SistOpe/
+  Makefile                    # Script de compilación automática
+  README.md                   # Documentación oficial del proyecto
+  USUARIOS.TXT                # Persistencia de usuarios
+  PERFILES.TXT                # Persistencia de perfiles
+  .env                        # Variables de entorno
+  a.txt / b.txt               # Archivos de prueba para matrices
+  sistope.exe                 # Ejecutable principal (Entrega 2)
+  multi.exe                   # Ejecutable independiente multiplicador de matrices
+
+  LIBROS/                     # Carpeta con >50MB de libros en .txt
+    ciencia_ficcion.txt
+    fantasia.txt
+    drama.txt
+    biografias.txt
+    ciencias.txt
+    naturaleza.txt
+
+  include/                    # Archivos de cabecera (.h)
+    cli.h
+    conteo.h
+    env.h
+    matriz.h
+    menu.h
+    perfil.h
+    usuario.h
+    utilidades.h
+
+  src/                        # Código fuente (.cpp)
+    cli.cpp
+    conteo.cpp
+    env.cpp
+    main.cpp
+    matriz.cpp
+    menu.cpp
+    multi_main.cpp
+    perfil.cpp
+    usuario.cpp
+    utilidades.cpp
 ```
-SistOpTorre/
-  Makefile                    
-  README.md                   
-  USUARIOS.TXT                
-  PERFILES.TXT                
-  .env                        
-
-  include/                    
-    menu.h                    
-    perfil.h                  
-    usuario.h                 
-
-  src/                        
-    main.cpp                  
-    menu.cpp                  
-    usuario.cpp               
-    output/                   
-```
-
-### Descripción de Archivos Principales
-
-#### **`include/` - Archivos de Cabecera**
-- **`usuario.h`**: Declara la estructura `Usuario` y `ListaUsuarios`, junto con funciones para crear, listar, buscar y eliminar usuarios.
-- **`perfil.h`**: Declara la estructura `Perfil` y `ListaPerfiles`, junto con funciones para gestionar perfiles.
-- **`menu.h`**: Declara funciones para la interfaz de usuario (menús, entrada/salida).
-
-#### **`src/` - Código Fuente**
-- **`main.cpp`**: Contiene la función `main()` que inicializa la aplicación y controla el flujo principal del programa.
-- **`usuario.cpp`**: Implementación de todas las operaciones con usuarios (crear, listar, modificar, eliminar).
-- **`perfil.cpp`**: Implementación de todas las operaciones con perfiles.
-- **`menu.cpp`**: Implementación de la interfaz interactiva.
-
-#### **Archivos de Datos**
-- **`.env`**: Contiene las variables de entorno
-- **`USUARIOS.TXT`**: Almacena los usuarios registrados en formato texto. Se sincroniza automáticamente con la memoria.
-- **`PERFILES.TXT`**: Almacena los perfiles disponibles en formato texto. Se sincroniza automáticamente con la memoria.
-
-#### **`Makefile`**
-Archivo de configuracion que automatiza la compilación del proyecto. Permite compilar todo con el comando `make`.
 
 ---
 
-## 3. Descripción de las Variables de Entorno
+## 3. Variables de Entorno (`.env`)
 
-El sistema puede leer variables de entorno definidas en un archivo `.env` .
+El sistema utiliza las siguientes variables de entorno para configurar las rutas por defecto:
 
-| Variable | Descripcion | Valor por Defecto |
+| Variable | Descripción | Valor por Defecto |
 | :--- | :--- | :--- |
-| `USER_FILE` | Ruta del archivo de texto para la persistencia de Usuarios | `USUARIOS.TXT` |
-| `PERFIL_FILE` | Ruta del archivo de texto para la persistencia de Perfiles | `PERFILES.TXT` |
+| `USER_FILE` | Ruta del archivo de texto para Usuarios | `USUARIOS.TXT` |
+| `PERFIL_FILE` | Ruta del archivo de texto para Perfiles | `PERFILES.TXT` |
+| `DEFAULT_TEXT_FILE` | Archivo de texto por defecto para la bandera `-f` | `LIBROS/libro1.txt` |
+| `MATRIX_EXEC` | Nombre del ejecutable multiplicador de matrices | `multi.exe` |
 
 Contenido del archivo `.env`:
 ```env
 USER_FILE=USUARIOS.TXT
 PERFIL_FILE=PERFILES.TXT
+DEFAULT_TEXT_FILE=LIBROS/ciencia_ficcion.txt
+MATRIX_EXEC=multi.exe
 ```
 
 ---
@@ -92,35 +110,43 @@ PERFIL_FILE=PERFILES.TXT
 ## 4. Instrucciones de Compilación y Ejecución
 
 ### Prerrequisitos
-- Compilador de C++ 
-- Herramienta `make` 
+- Compilador de C++ (`g++` compatible con C++17)
+- Herramienta `make` (opcional en Linux/macOS)
 
-### En Linux / macOS / WSL
+---
+
+### Compilación
+
+#### Opción A: Usando `make` (Linux / macOS / WSL)
 ```bash
-# 1. Compilar el proyecto usando Makefile
 make
-
-# 2. Ejecutar la aplicación
-./sistope
 ```
 
-### En Windows (PowerShell / CMD / Command Prompt)
-```cmd
-# Compilación directa con g++
-g++ -std=c++17 -static-libgcc -static-libstdc++ -Wall -Iinclude src/main.cpp src/usuario.cpp src/perfil.cpp src/menu.cpp -o sistope.exe
+#### Opción B: Compilación directa con `g++` (Windows PowerShell / CMD)
+```powershell
+# Compilar ejecutable principal
+g++ -std=c++17 -static-libgcc -static-libstdc++ -Wall -Iinclude src/main.cpp src/usuario.cpp src/perfil.cpp src/menu.cpp src/env.cpp src/cli.cpp src/conteo.cpp src/utilidades.cpp src/matriz.cpp -o sistope.exe
 
-# Ejecución
-./sistope.exe
+# Compilar ejecutable multiplicador de matrices
+g++ -std=c++17 -static-libgcc -static-libstdc++ -Wall -Iinclude src/multi_main.cpp src/matriz.cpp -o multi.exe
 ```
 
 ---
 
-## 5. Flujo de Ejecución
+### Ejecución
 
-1. **Inicialización:** El programa carga los usuarios y perfiles desde los archivos `USUARIOS.TXT` y `PERFILES.TXT`.
-2. **Menú Principal:** Se presenta un menú interactivo con opciones para gestionar usuarios y perfiles.
-3. **Operaciones CRUD:** El usuario puede crear, listar, modificar y eliminar usuarios y perfiles.
-4. **Persistencia:** Cada cambio se sincroniza automáticamente con los archivos de datos.
-5. **Salida:** Opción de salir del programa con la opción `0`.
+#### 1. Invocación del Menú Principal (sistope.exe)
+Ejemplo de ejecución ingresando como Administrador:
+```powershell
+.\sistope.exe -u lve -p 123456 -f "LIBROS/ciencia_ficcion.txt"
+```
 
+Ejemplo de ejecución ingresando como Usuario General:
+```powershell
+.\sistope.exe -u ma -p qwerty -f "LIBROS/fantasia.txt"
+```
 
+#### 2. Invocación Directa del Multiplicador de Matrices (multi.exe)
+```powershell
+.\multi.exe "a.txt" "b.txt" "#" "lve" "ADMIN"
+```
