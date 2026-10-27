@@ -1,0 +1,24 @@
+# Compilados
+*.exe
+*.o
+*.out
+SistOpe
+nul
+pdf_texto.txt
+
+# Archivos de datos generados
+USUARIOS.TXT
+PERFILES.TXT
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Archivos generados por la Entrega 3
+indice_invertido.idx
+libros_mapeo.txt
+juego.log
